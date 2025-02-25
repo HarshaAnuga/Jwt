@@ -30,3 +30,18 @@ function userExists(username, password) {
     }
     return user;
   }
+  app.post("/signin", function (req, res) {
+    const username = req.body.username;
+    const password = req.body.password;
+  
+    if (!userExists(username, password)) {
+      return res.status(403).json({
+        msg: "User doesnt exist in our in memory db",
+      });
+    }
+  
+    var token = jwt.sign({ username: username }, "shhhhh");
+    return res.json({
+      token,
+    });
+  });
